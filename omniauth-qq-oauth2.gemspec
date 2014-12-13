@@ -2,7 +2,7 @@
 require File.expand_path('../lib/omniauth-qq-oauth2/version', __FILE__)
 Gem::Specification.new do |spec|
     spec.name          = "omniauth-qq-oauth2"
-    spec.version       = Omniauth::Qq::VERSION
+    spec.version       = OmniAuth::Qq::VERSION
     spec.authors       = ["Cireate"]
     spec.email         = ["jacky8ts@gmail.com"]
     spec.description   = %q{OmniAuth for QQ}
