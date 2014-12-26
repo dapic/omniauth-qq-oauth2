@@ -36,9 +36,8 @@ describe OmniAuth::Strategies::QQ do
     end
   end
 
-  describe "#token_params" do
+  describe '#token_params' do
     specify "token response should be parsed as json" do
-      #expect(subject.token_params[:parse]).to eq(:json)
       expect(subject.token_params[:parse]).to eq(:query)
     end
   end
@@ -54,9 +53,8 @@ describe OmniAuth::Strategies::QQ do
   describe "#request_phase" do
     specify "redirect uri includes 'appid', 'redirect_uri', 'response_type', 'scope', 'state' and 'wechat_redirect' fragment " do
       callback_url = "http://exammple.com/callback"
-
-      subject.stub(:callback_url=>callback_url)
-      subject.should_receive(:redirect).with(valid_redirect_url(callback_url))
+      expect(subject).to receive(:callback_url).and_return(callback_url)
+      expect(subject).to receive(:redirect).with(valid_redirect_url(callback_url))
       subject.request_phase
     end
   end
@@ -77,7 +75,7 @@ describe OmniAuth::Strategies::QQ do
     before { 
       expect(access_token).to receive(:get).with('/oauth2.0/me').and_return(
         double("response", body: 'callback( {"client_id":"YOUR_APPID","openid":"YOUR_OPENID"} );'))
-      subject.stub(:access_token => access_token)
+      allow(subject).to receive(:access_token).and_return(access_token)
     }
 
     specify {expect(subject.uid).to eq("YOUR_OPENID")}
@@ -96,7 +94,7 @@ describe OmniAuth::Strategies::QQ do
                                                   :parse=>:json})
       .and_return(user_info_response)
       expect(user_info_response).to receive(:parsed).and_return(JSON.parse(user_info_response.body))
-      subject.stub(:access_token => access_token)
+      allow(subject).to receive(:access_token).and_return(access_token)
     }
     specify {expect(subject.raw_info).to eq(user_info_response_parsed_hash)}
 
